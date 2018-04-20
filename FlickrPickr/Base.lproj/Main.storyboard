@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina3_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="FlickrPickr" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IDK-pd-DRw">
+                                <rect key="frame" x="0.0" y="20" width="320" height="261.5"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter tag here." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LYd-gV-uZs">
+                                <rect key="frame" x="16" y="294" width="288" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="uuR-HL-NXt"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGV-Xj-C0n">
+                                <rect key="frame" x="134" y="364" width="53" height="36"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                <state key="normal" title="Search">
+                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="searchClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dD1-fN-L4A"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="IDK-pd-DRw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0S3-U4-Qkh"/>
+                            <constraint firstItem="WGV-Xj-C0n" firstAttribute="top" secondItem="LYd-gV-uZs" secondAttribute="bottom" constant="40" id="CYH-Zn-8mf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="IDK-pd-DRw" secondAttribute="bottom" constant="198.5" id="Fld-k8-aPY"/>
+                            <constraint firstItem="IDK-pd-DRw" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="OZi-sv-2ZQ"/>
+                            <constraint firstItem="WGV-Xj-C0n" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="134" id="QWb-qy-M5e"/>
+                            <constraint firstItem="IDK-pd-DRw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="blL-m4-CeS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="WGV-Xj-C0n" secondAttribute="bottom" constant="80" id="feh-Ts-LGP"/>
+                            <constraint firstItem="LYd-gV-uZs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="o5O-G2-yiS"/>
+                            <constraint firstItem="IDK-pd-DRw" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="tmL-qG-joj"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WGV-Xj-C0n" secondAttribute="trailing" constant="133" id="wj5-6h-Ah6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="LYd-gV-uZs" secondAttribute="trailing" constant="16" id="xLT-0B-eGg"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="IDK-pd-DRw" id="iRD-9V-PGE"/>
+                        <outlet property="searchButton" destination="WGV-Xj-C0n" id="fqB-mQ-Qyg"/>
+                        <outlet property="searchTextField" destination="LYd-gV-uZs" id="b1o-1w-fa0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-384" y="131"/>
+        </scene>
+    </scenes>
+</document>
