@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Alamofire
-import SwiftyJSON
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
@@ -44,7 +42,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func deployImage(for response: Response) {
-        if let photo = response.photos?.photo?[Int(arc4random_uniform(100))] {
+        self.searchButton.isEnabled = true
+        
+        if let photos = response.photos?.photo {
+            guard photos.count > 0 else { return }
+            let photo = photos[Int(arc4random_uniform(UInt32(photos.count)))]
             if let imageString = photo.imageString {
                 DispatchQueue.main.async {
                     if let url = URL(string: imageString) {
@@ -53,7 +55,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
                         }
                     }
                 }
-                self.searchButton.isEnabled = true
             }
         }
     }

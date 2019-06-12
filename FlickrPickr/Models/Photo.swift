@@ -29,7 +29,5 @@ class Photo: Codable {
         } else {
             return "https://i.imgur.com/uAhjMNd.jpg"
         }
-        
     }
-    
 }
