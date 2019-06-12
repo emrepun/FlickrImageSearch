@@ -16,13 +16,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     
-    let flickr_api_key = "acd810ba1b25a8400db16aece0142856"
-    let flickr_url = "https://api.flickr.com/services/rest/"
-    let search_method = "flickr.photos.search"
-    let format_type = "json"
-    let json_callback = 1
-    let privacy_filter = 1
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.searchTextField.delegate = self
@@ -30,50 +23,37 @@ class ViewController: UIViewController, UITextFieldDelegate {
         observeKeyboardNotification()
     }
     
-    
-    
     func displayImage() {
-        var getParameters: Parameters
         var finalTag = "tree"
         
         if let tag = searchTextField.text, (searchTextField.text?.count)! > 0 {
             finalTag = tag
         }
         
-        getParameters = [
-            "method": search_method,
-            "api_key": flickr_api_key,
-            "tags": finalTag,
-            "privacy_filter": privacy_filter,
-            "format": format_type,
-            "nojsoncallback": json_callback
-        ]
-        
-        Alamofire.request(flickr_url, method: .get, parameters: getParameters).responseJSON { response in
-            switch response.result {
-            case .success(let value):
-                print("success!")
-                let json = JSON(value)
-                print(json)
-                let myFetchedPhoto = FlickrPhoto(userJson: json)
-                
-                let farm = myFetchedPhoto.farm
-                let server = myFetchedPhoto.server
-                let photoID = myFetchedPhoto.id
-                let secret = myFetchedPhoto.secret
-                
-                guard photoID.count > 0 else {
-                    self.showAlert(title: "Unavailable Tag", message: "No photos found related with the tag given.")
-                    self.searchButton.isEnabled = true
-                    return
+        NetworkManager.shared.request(PhotoEndpoint.tag(tagID: finalTag)) { [weak self] (result: Result<Response>) in
+            switch result {
+            case .success(let response):
+                if let response = response {
+                    self?.deployImage(for: response)
                 }
                 
-                let imageString:String = "http://farm\(farm).staticflickr.com/\(server)/\(photoID)_\(secret)_n.jpg/"
-                self.urlToImageView(imageString: imageString)
-                self.searchButton.isEnabled = true
-                
-            case .failure(let error):
+            case .error(let error):
                 print(error)
+            }
+        }
+    }
+    
+    func deployImage(for response: Response) {
+        if let photo = response.photos?.photo?[Int(arc4random_uniform(100))] {
+            if let imageString = photo.imageString {
+                DispatchQueue.main.async {
+                    if let url = URL(string: imageString) {
+                        if let imageData = NSData(contentsOf: url) {
+                            self.imageView.image = UIImage(data: imageData as Data)
+                        }
+                    }
+                }
+                self.searchButton.isEnabled = true
             }
         }
     }
@@ -82,17 +62,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         searchTextField.resignFirstResponder()
         displayImage()
         searchButton.isEnabled = false
-    }
-    
-    // Convert image url to UIImage as data, and display
-    func urlToImageView(imageString: String) {
-        DispatchQueue.main.async {
-            let url = URL(string: imageString)
-            
-            if let imageData = NSData(contentsOf: url!) {
-                self.imageView.image = UIImage(data: imageData as Data)
-            }
-        }
     }
     
     //MARK: Keyboard Methods
