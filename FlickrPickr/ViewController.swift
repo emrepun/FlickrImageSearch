@@ -26,50 +26,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.searchTextField.delegate = self
+        displayImage()
         observeKeyboardNotification()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-    @IBAction func searchClick(_ sender: Any) {
-        // Show an alert if the tag is not given
-        guard !(searchTextField.text?.isEmpty)! else {
-            showAlert(title: "Search tag is missing", message: "Please enter a search tag to proceed.")
-            return
-        }
-        
-        searchTextField.resignFirstResponder()
-        displayImage()
-        searchButton.isEnabled = false
-    }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
-    }
-    
-    // Convert image url to UIImage as data, and display
-    func urlToImageView(imageString: String) {
-        DispatchQueue.main.async {
-            let url = URL(string: imageString)
-            
-            if let imageData = NSData(contentsOf: url!) {
-                self.imageView.image = UIImage(data: imageData as Data)
-            } else {
-                // If imageData is nil, we try to load again .d :((
-                self.urlToImageView(imageString: imageString)
-            }
-        }
-    }
     
     func displayImage() {
-        let getParameters: Parameters = [
+        var getParameters: Parameters
+        var finalTag = "tree"
+        
+        if let tag = searchTextField.text, (searchTextField.text?.count)! > 0 {
+            finalTag = tag
+        }
+        
+        getParameters = [
             "method": search_method,
             "api_key": flickr_api_key,
-            "tags": "\(searchTextField.text!)",
+            "tags": finalTag,
             "privacy_filter": privacy_filter,
             "format": format_type,
             "nojsoncallback": json_callback
@@ -80,6 +54,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             case .success(let value):
                 print("success!")
                 let json = JSON(value)
+                print(json)
                 let myFetchedPhoto = FlickrPhoto(userJson: json)
                 
                 let farm = myFetchedPhoto.farm
@@ -89,6 +64,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 
                 guard photoID.count > 0 else {
                     self.showAlert(title: "Unavailable Tag", message: "No photos found related with the tag given.")
+                    self.searchButton.isEnabled = true
                     return
                 }
                 
@@ -101,6 +77,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
+    
+    @IBAction func searchClick(_ sender: Any) {
+        searchTextField.resignFirstResponder()
+        displayImage()
+        searchButton.isEnabled = false
+    }
+    
+    // Convert image url to UIImage as data, and display
+    func urlToImageView(imageString: String) {
+        DispatchQueue.main.async {
+            let url = URL(string: imageString)
+            
+            if let imageData = NSData(contentsOf: url!) {
+                self.imageView.image = UIImage(data: imageData as Data)
+            }
+        }
+    }
+    
+    //MARK: Keyboard Methods
     
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: .UIKeyboardWillShow, object: nil)
@@ -120,6 +115,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
             let y: CGFloat = UIDevice.current.orientation.isLandscape ? -120 : -200
             self.view.frame = CGRect(x: 0, y: y, width: self.view.frame.width, height: self.view.frame.height)
         }, completion: nil)
+    }
+    
+    //MARK: UITextFieldDelegate Methods
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
 }
 
