@@ -28,11 +28,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
             finalTag = tag
         }
         
+        Indicator.start(style: .whiteLarge)
+        
         NetworkManager.shared.request(PhotoEndpoint.tag(tagID: finalTag)) { [weak self] (result: Result<Response>) in
             switch result {
             case .success(let response):
                 if let response = response {
                     self?.deployImage(for: response)
+                    Indicator.stop()
                 }
                 
             case .error(let error):
