@@ -18,22 +18,6 @@ extension PhotoEndpoint: Endpoint {
         return request(forPath: "/services/rest/")
     }
     
-//    var requestBody: [String : Any]? {
-//        var body: [String: Any] = [:]
-//        switch self {
-//        case .tag(let tag):
-//            guard let tagName = tag else { return nil }
-//            body["method"] = "flickr.photos.search"
-//            body["api_key"] = NetworkManager.Constants.apiKey
-//            body["tags"] = tagName
-//            body["privacy_filter"] = 1
-//            body["format_type"] = "json"
-//            body["nojsoncallback"] = 1
-//        }
-//
-//        return body
-//    }
-    
     var queryItems: [URLQueryItem]? {
         var items: [URLQueryItem] = []
         

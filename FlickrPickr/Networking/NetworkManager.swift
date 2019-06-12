@@ -68,8 +68,6 @@ final class NetworkManager: WebserviceProtocol {
         }
 
         let task = urlSession.dataTask(with: request) { (data, response, error) in
-            let response = response
-            debugPrint(response)
             
             if let error = error {
                 OperationQueue.main.addOperation({ completion(.error(error)) })
@@ -86,7 +84,6 @@ final class NetworkManager: WebserviceProtocol {
         
         task.resume()
     }
-    
 }
 
 struct Parser {
@@ -143,6 +140,7 @@ extension Endpoint {
                 request.setValue(value, forHTTPHeaderField: key)
             }
         }
+        
         return request
     }
 }
